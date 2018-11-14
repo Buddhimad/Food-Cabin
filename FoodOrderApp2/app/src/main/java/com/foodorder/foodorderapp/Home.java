@@ -1,5 +1,6 @@
 package com.foodorder.foodorderapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ public class Home extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-      loadMenu();
+        loadMenu();
     }
 
     @Override
@@ -80,7 +82,7 @@ public class Home extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-       // loadMenu();
+        // loadMenu();
     }
 
     private void loadMenu() {
@@ -88,10 +90,18 @@ public class Home extends AppCompatActivity
         adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
-//                viewHolder.txtMenuName.setText(model.getName());
-//                Picasso.with(getBaseContext()).load(model.getImage())
-//                        .into(viewHolder.imageView);
-                viewHolder.setDetails(getApplicationContext(), model.getName(), model.getImage());
+                viewHolder.txtMenuName.setText(model.getName());
+                Picasso.with(getBaseContext()).load(model.getImage())
+                        .into(viewHolder.imageView);
+                final Category clickItem = model;
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean b) {
+                        Intent foodList = new Intent(Home.this, FoodList.class);
+                        foodList.putExtra("CategoryId", adapter.getRef(position).getKey());
+                        startActivity(foodList);
+                    }
+                });
 
             }
         };

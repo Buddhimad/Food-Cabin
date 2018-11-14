@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/dish"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/dish"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Opening">
@@ -24,7 +24,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Signin" />
         <activity android:name=".Signup" />
-        <activity android:name=".Main"></activity>
+        <activity android:name=".Main" />
+        <activity android:name=".FoodList" />
+        <activity android:name=".FoodDetail"></activity>
     </application>
 
 </manifest>
