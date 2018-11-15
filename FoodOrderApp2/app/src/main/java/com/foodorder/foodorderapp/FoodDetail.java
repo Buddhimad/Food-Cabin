@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 public class FoodDetail extends AppCompatActivity {
 
-    TextView food_name,food_price,food_description;
+    TextView food_name, food_price, food_description;
     ImageView food_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton btnCart;
@@ -30,32 +30,38 @@ public class FoodDetail extends AppCompatActivity {
     DatabaseReference foods;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (getIntent() != null) {
+            foodId = getIntent().getStringExtra("FoodId");
+            if (!foodId.isEmpty()) {
+
+                getDetailsFood(foodId);
+            }
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
 
-        database=FirebaseDatabase.getInstance();
-        foods=database.getReference("Food");
+        database = FirebaseDatabase.getInstance();
+        foods = database.getReference("Food");
 
-        numberButton= (ElegantNumberButton) findViewById(R.id.number_button);
-        btnCart= (FloatingActionButton) findViewById(R.id.btnCart);
+      //  numberButton = (ElegantNumberButton) findViewById(R.id.number_button);
+        btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
 
-        food_description= (TextView) findViewById(R.id.food_description);
-        food_name= (TextView) findViewById(R.id.food_name);
-        food_price= (TextView) findViewById(R.id.food_price);
-        food_image= (ImageView) findViewById(R.id.img_food);
+       food_description = (TextView) findViewById(R.id.food_description);
+        food_name = (TextView) findViewById(R.id.food_name);
+        food_price = (TextView) findViewById(R.id.food_price);
+        food_image = (ImageView) findViewById(R.id.img_food);
 
-        collapsingToolbarLayout= (CollapsingToolbarLayout) findViewById(R.id.collapsing);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
 
-        if(getIntent()!=null){
-            foodId=getIntent().getStringExtra("FoodId");
-            if(!foodId.isEmpty()){
-                
-                getDetailsFood(foodId);
-            }
-        }
 
     }
 
@@ -63,7 +69,7 @@ public class FoodDetail extends AppCompatActivity {
         foods.child(foodId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Food food=dataSnapshot.getValue(Food.class);
+                Food food = dataSnapshot.getValue(Food.class);
 
                 Picasso.with(getBaseContext()).load(food.getImage())
                         .into(food_image);
